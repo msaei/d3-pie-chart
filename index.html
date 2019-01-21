@@ -8,6 +8,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
     <title>pie chart</title>
+    <style>
+        h2,
+        p {
+            margin: 10px, 0;
+        }
+        
+        header {
+            margin-bottom: 40px;
+        }
+    </style>
 </head>
 
 <body class="indigo">
@@ -22,7 +32,26 @@
     <div class="container section">
         <div class="row">
             <div class="col s12 m6">
+                <form class="card">
+                    <div class="card-content">
+                        <span class="card-title indigo-text">Add item:</span>
+                        <div class="input-field">
+                            <input type="text" id="name">
+                            <label for="name">Item name</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" id="amount">
+                            <label for="amount">Item amount (hours)</label>
+                        </div>
+                        <div class="input-field center">
+                            <button class="btn-large pink white-text">Add Item</button>
+                        </div>
+                        <div class="input-field center">
+                            <p class="red-text center" id="error">test</p>
+                        </div>
+                    </div>
 
+                </form>
             </div>
             <div class="col s12 m5 push-m1">
                 <div class="canvas">
