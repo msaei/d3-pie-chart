@@ -13,14 +13,34 @@ const pie = d3.pie()
     .sort(null)
     .value(d => d.amount)
 
-const angels = pie([
-    { name: 'coding', amount: 120 },
-    { name: 'reading', amount: 45 },
-    { name: 'chatting', amount: 60 }
-]);
 
 const arcPath = d3.arc()
     .outerRadius(dims.radius)
     .innerRadius(dims.radius / 2);
+//update function
+function update(data) {
+    console.log(data);
+}
 
-console.log(arcPath(angels[0]));
+// data array and firebase
+var data = [];
+db.collection("activities").onSnapshot(res => {
+    res.docChanges().forEach(change => {
+        const doc = {...change.doc.data(), id: change.doc.id };
+        switch (change.type) {
+            case 'added':
+                data.push(doc);
+                break;
+            case 'modified':
+                const index = data.findIndex(item => item.id == doc.id);
+                data[index] = doc;
+                break;
+            case 'removed':
+                data = data.filter(item => item.id !== doc.id);
+                break;
+            default:
+                break;
+        }
+    })
+    update(data)
+})
