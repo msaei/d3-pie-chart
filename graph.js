@@ -17,8 +17,14 @@ const pie = d3.pie()
 const arcPath = d3.arc()
     .outerRadius(dims.radius)
     .innerRadius(dims.radius / 2);
+
+const color = d3.scaleOrdinal(d3['schemeSet3']);
+
 //update function
 function update(data) {
+    //update scale color domain
+    color.domain(data.map(d => d.name))
+
     //join enhanced (pie) data to path elements
     const paths = graph.selectAll('path')
         .data(pie(data));
@@ -29,6 +35,7 @@ function update(data) {
         .attr('d', arcPath)
         .attr('stroke', '#fff')
         .attr('stroke-width', 3)
+        .attr('fill', d => color(d.data.name))
 }
 
 // data array and firebase
