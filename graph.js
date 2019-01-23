@@ -32,11 +32,8 @@ function update(data) {
     // remove exit selection
     paths.exit().remove();
 
-    // add attrs to rects already in the DOM
-    paths.attr('d', arcPath)
-        .attr('stroke', '#fff')
-        .attr('stroke-width', 3)
-        .attr('fill', d => color(d.data.name))
+    // add attrs to paths already in the DOM
+    paths.attr('d', arcPath);
 
     // append the enter selection to the DOM
     paths.enter()
@@ -46,6 +43,8 @@ function update(data) {
         .attr('stroke', '#fff')
         .attr('stroke-width', 3)
         .attr('fill', d => color(d.data.name))
+        .transition().duration(1000)
+        .attrTween('d', arcTweenEnter);
 }
 
 // data array and firebase
@@ -70,3 +69,12 @@ db.collection("activities").onSnapshot(res => {
     })
     update(data)
 })
+
+//tween functions
+const arcTweenEnter = (d) => {
+    var i = d3.interpolate(d.endAngle, d.startAngle);
+    return function(t) {
+        d.startAngle = i(t)
+        return arcPath(d);
+    }
+}
