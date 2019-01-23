@@ -29,6 +29,16 @@ function update(data) {
     const paths = graph.selectAll('path')
         .data(pie(data));
 
+    // remove exit selection
+    paths.exit().remove();
+
+    // add attrs to rects already in the DOM
+    paths.attr('d', arcPath)
+        .attr('stroke', '#fff')
+        .attr('stroke-width', 3)
+        .attr('fill', d => color(d.data.name))
+
+    // append the enter selection to the DOM
     paths.enter()
         .append('path')
         .attr('class', 'arc')
