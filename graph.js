@@ -30,7 +30,10 @@ function update(data) {
         .data(pie(data));
 
     // remove exit selection
-    paths.exit().remove();
+    paths.exit()
+        .transition().duration(1000)
+        .attrTween('d', arcTweenExit)
+        .remove();
 
     // add attrs to paths already in the DOM
     paths.attr('d', arcPath);
@@ -39,7 +42,6 @@ function update(data) {
     paths.enter()
         .append('path')
         .attr('class', 'arc')
-        .attr('d', arcPath)
         .attr('stroke', '#fff')
         .attr('stroke-width', 3)
         .attr('fill', d => color(d.data.name))
@@ -73,6 +75,14 @@ db.collection("activities").onSnapshot(res => {
 //tween functions
 const arcTweenEnter = (d) => {
     var i = d3.interpolate(d.endAngle, d.startAngle);
+    return function(t) {
+        d.startAngle = i(t)
+        return arcPath(d);
+    }
+}
+
+const arcTweenExit = (d) => {
+    var i = d3.interpolate(d.startAngle, d.endAngle);
     return function(t) {
         d.startAngle = i(t)
         return arcPath(d);
