@@ -36,7 +36,9 @@ function update(data) {
         .remove();
 
     // add attrs to paths already in the DOM
-    paths.attr('d', arcPath);
+    paths.attr('d', arcPath)
+        .transition().duration(1000)
+        .attrTween('d', arcTweenUpdate);
 
     // append the enter selection to the DOM
     paths.enter()
@@ -45,6 +47,7 @@ function update(data) {
         .attr('stroke', '#fff')
         .attr('stroke-width', 3)
         .attr('fill', d => color(d.data.name))
+        .each(function(d) { this._current = d })
         .transition().duration(1000)
         .attrTween('d', arcTweenEnter);
 }
@@ -86,5 +89,14 @@ const arcTweenExit = (d) => {
     return function(t) {
         d.startAngle = i(t)
         return arcPath(d);
+    }
+}
+
+function arcTweenUpdate(d) {
+
+    var i = d3.interpolate(this._current, d);
+    this_current = d;
+    return function(t) {
+        return arcPath(i(t));
     }
 }
