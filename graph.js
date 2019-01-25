@@ -63,6 +63,11 @@ function update(data) {
         .each(function(d) { this._current = d })
         .transition().duration(1000)
         .attrTween('d', arcTweenEnter);
+
+    // add event listeners
+    d3.selectAll('path')
+        .on('mouseover', handleMouseOver)
+        .on('mouseout', handleMouseOut)
 }
 
 // data array and firebase
@@ -112,4 +117,19 @@ function arcTweenUpdate(d) {
     return function(t) {
         return arcPath(i(t));
     }
+}
+
+//event handlers
+const handleMouseOver = (d, i, n) => {
+    //console.log(n[i]);
+    d3.select(n[i])
+        .transition().duration(500)
+        .attr('fill', '#fff');
+
+}
+
+const handleMouseOut = (d, i, n) => {
+    d3.select(n[i])
+        .transition().duration(500)
+        .attr('fill', color(d.data.name));
 }
