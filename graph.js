@@ -68,6 +68,7 @@ function update(data) {
     d3.selectAll('path')
         .on('mouseover', handleMouseOver)
         .on('mouseout', handleMouseOut)
+        .on('click', handleClick)
 }
 
 // data array and firebase
@@ -132,4 +133,12 @@ const handleMouseOut = (d, i, n) => {
     d3.select(n[i])
         .transition('changeSliceFill').duration(500)
         .attr('fill', color(d.data.name));
+}
+
+const handleClick = (d) => {
+    const id = d.data.id;
+    db.collection('activities').doc(id).delete()
+        .catch(e => {
+            console.log(e.message)
+        });
 }
