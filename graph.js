@@ -29,6 +29,14 @@ const legend = d3.legendColor()
     .shapePadding(10)
     .scale(color);
 
+const tip = d3.tip()
+    .attr("class", "tip card")
+    .html(d => {
+        return `<p> Hi there <p>`
+    })
+
+graph.call(tip);
+
 //update function
 function update(data) {
     //update scale color domain
@@ -122,7 +130,7 @@ function arcTweenUpdate(d) {
 
 //event handlers
 const handleMouseOver = (d, i, n) => {
-    //console.log(n[i]);
+    tip.show(d, n[i]);
     d3.select(n[i])
         .transition('changeSliceFill').duration(500)
         .attr('fill', '#fff');
@@ -130,6 +138,7 @@ const handleMouseOver = (d, i, n) => {
 }
 
 const handleMouseOut = (d, i, n) => {
+    tip.hide();
     d3.select(n[i])
         .transition('changeSliceFill').duration(500)
         .attr('fill', color(d.data.name));
